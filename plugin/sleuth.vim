@@ -60,6 +60,10 @@ function! s:guess(lines) abort
       let backtick = 1
     endif
 
+    if line =~# '^\s*\(public\|private\|protected\):'
+      continue
+    endif
+
     if line =~# '^\t'
       let heuristics.hard += 1
     elseif line =~# '^' . softtab
