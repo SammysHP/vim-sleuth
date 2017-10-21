@@ -33,4 +33,10 @@ If you want only the current file to be scanned, set: >
   let b:sleuth_try_other_files = 0
   let g:sleuth_try_other_files = 0
 <
+
+The number of scanned lines for the current file and neighboring files is
+controlled with (with defaults): >
+  let g:sleuth_maxlines          = 1024
+  let g:sleuth_maxlines_neighbor = min([g:sleuth_maxlines, 256])
+<
  vim:tw=78:et:ft=help:norl:
