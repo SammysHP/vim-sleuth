@@ -129,7 +129,7 @@ function! s:apply_if_ready(options) abort
   endif
 endfunction
 
-function! s:detect() abort
+function! s:detect(force_try_other_files) abort
   if &buftype ==# 'help'
     return
   endif
@@ -140,7 +140,7 @@ function! s:detect() abort
     return
   endif
 
-  if get(g:, 'sleuth_try_other_files', 1)
+  if a:force_try_other_files || get(b:, 'sleuth_try_other_files', get(g:, 'sleuth_try_other_files', 1))
     let maxlines_n = get(g:, 'sleuth_maxlines_neighbor', min([maxlines, 256]))
     let patterns = s:patterns_for(&filetype)
     call filter(patterns, 'v:val !~# "/"')
@@ -182,11 +182,11 @@ augroup sleuth
   autocmd!
   autocmd FileType *
         \ if get(b:, 'sleuth_automatic', get(g:, 'sleuth_automatic', 1))
-        \ | call s:detect() | endif
+        \ | call s:detect(0) | endif
   autocmd User Flags call Hoist('buffer', 5, 'SleuthIndicator')
 augroup END
 
-command! -bar -bang Sleuth call s:detect()
+command! -bar -bang Sleuth execute s:detect(<bang>0)
 
 if exists('g:did_indent_on')
   filetype indent off
