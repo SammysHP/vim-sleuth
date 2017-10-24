@@ -15,6 +15,7 @@ function! s:guess(lines) abort
   let podcomment = 0
   let triplequote = 0
   let backtick = 0
+  let xmlcomment = 0
   let softtab = repeat(' ', 8)
 
   for line in a:lines
@@ -61,6 +62,16 @@ function! s:guess(lines) abort
     endif
 
     if line =~# '^\s*\(public\|private\|protected\):'
+      continue
+    endif
+
+    if line =~# '^\s*<\!--'
+      let xmlcomment = 1
+    endif
+    if xmlcomment
+      if line =~# '-->'
+        let xmlcomment = 0
+      endif
       continue
     endif
 
