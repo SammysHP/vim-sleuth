@@ -171,6 +171,7 @@ function! s:detect(force_try_other_files) abort
       let dir = fnamemodify(dir, ':h')
     endwhile
   endif
+
   if has_key(options, 'shiftwidth')
     return s:apply_if_ready(extend({'expandtab': 1}, options))
   endif
@@ -197,7 +198,7 @@ augroup sleuth
   autocmd User Flags call Hoist('buffer', 5, 'SleuthIndicator')
 augroup END
 
-command! -bar -bang Sleuth execute s:detect(<bang>0)
+command! -bar -bang Sleuth call s:detect(<bang>0)
 
 if exists('g:did_indent_on')
   filetype indent off
